@@ -1,10 +1,8 @@
-from collections import namedtuple
-
 from flask import Flask, render_template, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URL'] = 'postgres://postgres:root@localhost/py_flasky.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:root@localhost/py_flasky.db'
 db = SQLAlchemy(app)
 
 
@@ -12,10 +10,10 @@ class Message(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(1024), nullable=False)
 
-    def __init__(self, text, tags):
+    def __init__(self, text, tags_csv):
         self.text = text.strip()
         self.tags = [
-            Tag(text=tag.strip()) for tag in tags.split(',')
+            Tag(text=tag.strip()) for tag in tags_csv.split(',')
         ]
 
 
